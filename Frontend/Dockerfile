@@ -1,26 +1,38 @@
 # Frontend/Dockerfile
 
-# Use an official Node.js runtime as a parent image (Alpine for smaller size)
-FROM node:20-alpine
+# ---- Build Stage ----
+    FROM node:20-alpine AS build
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy package.json and package-lock.json (if available)
-COPY package*.json ./
-
-# Install app dependencies
-# Use --legacy-peer-deps if you encounter peer dependency issues
-RUN npm install #--legacy-peer-deps
-
-# Copy the rest of the application code
-# Note: We'll mount the source code using docker-compose for development,
-# but copying ensures the image can potentially work standalone if needed.
-COPY . .
-
-# Vite's default port
-EXPOSE 5173
-
-# Command to run the Vite development server
-# `--host` makes it accessible from outside the container
-CMD ["npm", "run", "dev", "--", "--host"]
+    WORKDIR /app
+    
+    # Copy package files and install dependencies
+    COPY package*.json ./
+    RUN npm install
+    
+    # Copy the rest of the application source code
+    COPY . .
+    
+    # --- IMPORTANT: Handle Build-time Environment Variables ---
+    # If VITE_API_BASE_URL is needed at build time:
+    # 1. Declare the ARG
+    ARG VITE_API_BASE_URL
+    # 2. Set it as an environment variable for the build process
+    ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+    
+    # Build the React app for production
+    RUN npm run build # This creates the static files in the 'dist' folder
+    
+    # ---- Production Stage ----
+    FROM nginx:stable-alpine AS production
+    
+    # Copy the production build output from the 'build' stage
+    COPY --from=build /app/dist /usr/share/nginx/html
+    
+    # Optional: Copy a custom Nginx configuration if needed
+    # COPY nginx.conf /etc/nginx/conf.d/default.conf
+    
+    # Expose port 80 (Nginx default)
+    EXPOSE 80
+    
+    # Default command to start Nginx
+    CMD ["nginx", "-g", "daemon off;"]
