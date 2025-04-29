@@ -1,13 +1,12 @@
 # ./docker-compose.yml
-version: '3.8'
 
 services:
   db:
     image: postgres:15 # Or your preferred version
     container_name: noteapp_db
     environment:
-      POSTGRES_USER: your_db_user # Choose a user
-      POSTGRES_PASSWORD: your_strong_password # Choose a password
+      POSTGRES_USER: ${DB_USER} # Choose a user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}  # Choose a password
       POSTGRES_DB: notes_db # Choose a database name
     ports:
       - "5432:5432" # Map host port 5432 to container port 5432
