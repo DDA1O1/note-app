@@ -41,7 +41,7 @@ jobs:
           push: true # Push the image to Docker Hub
           tags: | # Tags for the image
             ${{ secrets.DOCKERHUB_USERNAME }}/noteapp-backend:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/noteapp-backend:${{ github.sha }} # Tag with the commit SHA
+            ${{ secrets.DOCKERHUB_USERNAME }}/noteapp-backend:${{ github.sha }}
           platforms: linux/amd64 # Specify platform(s) (optional, default is runner's platform)
           cache-from: type=gha # Enable GitHub Actions cache for Docker layers
           cache-to: type=gha,mode=max # Write cache back
