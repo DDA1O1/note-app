@@ -6,7 +6,7 @@ name: Build and Push Docker Images to Docker Hub
 on:
     push:
       tags:
-        - 'v.*.*' # Trigger ONLY on version tags starting with v.
+        - 'v*.*.*' # Trigger ONLY on version tags starting with v*.*.*.
                    
                    
     workflow_dispatch: {} 
