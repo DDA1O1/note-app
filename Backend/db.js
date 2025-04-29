@@ -58,8 +58,9 @@ const pool = new Pool({
     }
   };
   
-  
-  module.exports = {
+const db = {
     query: (text, params) => pool.query(text, params),
     pool, // Export pool if needed elsewhere, e.g., for transactions
-  };
+};
+
+export default db;

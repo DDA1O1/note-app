@@ -34,3 +34,8 @@ yarn-error.log*
 
 # Operating System Files
 Thumbs.db 
+
+# Docker
+.docker
+docker-compose.override.yml
+*.env.docker

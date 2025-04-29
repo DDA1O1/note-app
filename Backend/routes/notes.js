@@ -1,6 +1,6 @@
 // Backend/routes/notes.js
-const express = require('express');
-const db = require('../db'); // Adjust path if needed
+import express from 'express';
+import db from '../db.js';
 const router = express.Router();
 
 // GET all notes
@@ -87,4 +87,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

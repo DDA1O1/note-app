@@ -1,7 +1,8 @@
-import 'dotenv/config'; // Load .env variables first
+import 'dotenv/config'; 
 import express from 'express';
 import cors from 'cors';
-import db from './db';
+import db from './db.js';
+import noteRoutes from './routes/notes.js';
 
 const app = express();
 const PORT = process.env.BACKEND_PORT || 5000;
@@ -13,10 +14,7 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'UP' });
   });
 
-
-const noteRoutes = require('./routes/notes'); // Adjust path if needed
 app.use('/api/notes', noteRoutes);
-
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
